@@ -1,0 +1,25 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace PropertyManagementApp.Models
+{
+    public class Property
+    {
+        public int Id { get; set; }
+
+        [Required]
+        [StringLength(200)]
+        public string Address { get; set; } = string.Empty;
+
+        [Range(0, double.MaxValue)]
+        public decimal Rent { get; set; }
+
+        [Required]
+        public string Status { get; set; } = "Vacant";
+
+        public ICollection<Tenant> Tenants { get; set; } = new List<Tenant>();
+
+        public ICollection<RentPayment> RentPayments { get; set; } = new List<RentPayment>();
+
+        public ICollection<Expense> Expenses { get; set; } = new List<Expense>();
+    }
+}
