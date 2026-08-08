@@ -16,6 +16,11 @@ namespace PropertyManagementApp.Models
         [Required]
         public string Status { get; set; } = "Vacant";
 
+        [Required]
+        public string LandlordId { get; set; } = string.Empty;
+
+        public PropertyManagementAppUser? Landlord { get; set; }
+
         public ICollection<Tenant> Tenants { get; set; } = new List<Tenant>();
 
         public ICollection<RentPayment> RentPayments { get; set; } = new List<RentPayment>();
