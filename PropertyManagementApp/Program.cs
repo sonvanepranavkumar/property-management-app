@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PropertyManagementApp.Data;
+using PropertyManagementApp.Models;
 using PropertyManagementApp.Services;
 
 namespace PropertyManagementApp
@@ -15,7 +16,7 @@ namespace PropertyManagementApp
 
             builder.Services.AddDbContext<PropertyManagementAppDbContext>(options => options.UseSqlServer(connectionString));
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+            builder.Services.AddDefaultIdentity<PropertyManagementAppUser>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = false;
             })

@@ -12,13 +12,18 @@
                 <div class="card-body">
                     <h5 class="card-title">@property.Address</h5>
 
-                    <p class="card-text"><strong>Rent:</strong> £@property.Rent</p>
-                    <p class="card-text"><strong>Occupancy Status:</strong> @property.Status</p>
+                    <p class="card-text">
+                        <strong>Rent:</strong> £@property.Rent.ToString("N2")
+                    </p>
+
+                    <p class="card-text">
+                        <strong>Occupancy Status:</strong> @property.Status
+                    </p>
 
                     @if (property.Tenants.Any())
                     {
                         <h6>Tenants</h6>
-                        
+
                         <ul>
                             @foreach (var tenant in property.Tenants)
                             {
@@ -26,6 +31,26 @@
                             }
                         </ul>
                     }
+
+                    <div class="mt-3">
+                        <a asp-action="Details"
+                           asp-route-id="@property.Id"
+                           class="btn btn-info">
+                            Details
+                        </a>
+
+                        <a asp-action="Edit"
+                           asp-route-id="@property.Id"
+                           class="btn btn-warning">
+                            Edit
+                        </a>
+
+                        <a asp-action="Delete"
+                           asp-route-id="@property.Id"
+                           class="btn btn-danger">
+                            Delete
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
