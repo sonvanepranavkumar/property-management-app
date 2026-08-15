@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Property>
+
+<h1>Properties</h1>
+
+<a asp-action="Create" class="btn btn-primary mb-4">Add Property</a>
+
+<div class="row">
+    @foreach (var property in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">@property.Address</h5>
+
+                    <p class="card-text"><strong>Rent:</strong> £@property.Rent</p>
+                    <p class="card-text"><strong>Occupancy Status:</strong> @property.Status</p>
+
+                    @if (property.Tenants.Any())
+                    {
+                        <h6>Tenants</h6>
+                        
+                        <ul>
+                            @foreach (var tenant in property.Tenants)
+                            {
+                                <li>@tenant.FirstName @tenant.LastName</li>
+                            }
+                        </ul>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>

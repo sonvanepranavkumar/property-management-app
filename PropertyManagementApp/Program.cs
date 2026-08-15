@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PropertyManagementApp.Data;
+using PropertyManagementApp.Services;
 
 namespace PropertyManagementApp
 {
@@ -22,6 +23,11 @@ namespace PropertyManagementApp
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddScoped<IPropertyService, PropertyService>();
+            builder.Services.AddScoped<ITenantService, TenantService>();
+            builder.Services.AddScoped<IRentPaymentService, RentPaymentService>();
+            builder.Services.AddScoped<IExpenseService, ExpenseService>();
 
             builder.Services.AddRazorPages();
 
