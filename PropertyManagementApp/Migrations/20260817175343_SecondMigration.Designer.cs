@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PropertyManagementApp.Data;
 
@@ -11,9 +12,11 @@ using PropertyManagementApp.Data;
 namespace PropertyManagementApp.Migrations
 {
     [DbContext(typeof(PropertyManagementAppDbContext))]
-    partial class PropertyManagementAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260817175343_SecondMigration")]
+    partial class SecondMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -354,11 +357,11 @@ namespace PropertyManagementApp.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<DateOnly?>("LeaseEndDate")
-                        .HasColumnType("date");
+                    b.Property<DateTime?>("LeaseEndDate")
+                        .HasColumnType("datetime2");
 
-                    b.Property<DateOnly>("LeaseStartDate")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("LeaseStartDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");

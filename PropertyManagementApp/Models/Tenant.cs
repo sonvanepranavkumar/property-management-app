@@ -22,9 +22,9 @@ namespace PropertyManagementApp.Models
         public string? Phone { get; set; }
 
         [Required]
-        public DateTime LeaseStartDate { get; set; }
+        public DateOnly LeaseStartDate { get; set; }
 
-        public DateTime? LeaseEndDate { get; set; }
+        public DateOnly? LeaseEndDate { get; set; }
 
         public int PropertyId { get; set; }
 

@@ -37,6 +37,14 @@ namespace PropertyManagementApp.Services
         public async Task<Tenant> CreateTenantAsync(Tenant tenant)
         {
             _context.Tenants.Add(tenant);
+
+            var property = await _context.Properties.FirstOrDefaultAsync(p => p.Id == tenant.PropertyId);
+
+            if (property != null)
+            {
+                property.Status = "Occupied";
+            }
+
             await _context.SaveChangesAsync();
 
             return tenant;

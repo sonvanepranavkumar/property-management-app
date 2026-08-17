@@ -1,0 +1,62 @@
+﻿@model Property
+
+<h4>@Model.Address</h4>
+
+<hr />
+
+@if (Model.Tenants.Any())
+{
+    foreach (var tenant in Model.Tenants)
+    {
+        <div class="card mb-3">
+            <div class="card-body">
+
+                <h5 class="card-title">
+                    @tenant.FirstName @tenant.LastName
+                </h5>
+                <p>
+                    <strong>Email:</strong>
+                    @tenant.Email
+                </p>
+
+                @if (!string.IsNullOrEmpty(tenant.Phone))
+                {
+                    <p>
+                        <strong>Phone:</strong>
+                        @tenant.Phone
+                    </p>
+                }
+
+                <p>
+                    <strong>Lease Start:</strong>
+                    @tenant.LeaseStartDate.ToString("dd/MM/yyyy")
+                </p>
+                <p>
+                    <strong>Lease End:</strong>
+                    @(tenant.LeaseEndDate.HasValue ? tenant.LeaseEndDate.Value.ToString("dd/MM/yyyy") : "Ongoing")
+                </p>
+
+                <form asp-controller="Tenant"
+                      asp-action="Delete"
+                      asp-route-id="@tenant.Id"
+                      method="post">
+
+                    <button type="submit" class="btn btn-danger">Delete</button>
+
+                </form>
+
+            </div>
+        </div>
+    }
+}
+
+<a asp-controller="Tenant"
+   asp-action="Create"
+   asp-route-propertyId="@Model.Id"
+   class="btn btn-primary">
+    Add Tenant
+</a>
+
+<a asp-action="Index" class="btn btn-secondary">
+    Back to Properties
+</a>
