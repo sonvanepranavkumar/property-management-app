@@ -52,7 +52,6 @@ namespace PropertyManagementApp.Services
             }
 
             existingProperty.Rent = property.Rent;
-            existingProperty.Status = property.Status;
 
             await _context.SaveChangesAsync();
 
@@ -61,16 +60,20 @@ namespace PropertyManagementApp.Services
 
         public async Task<bool> DeletePropertyAsync(int id, string landlordId)
         {
-            var existingProperty = await _context.Properties.FirstOrDefaultAsync(p =>
-                p.Id == id &&
-                p.LandlordId == landlordId);
+            var existingProperty = await _context.Properties
+                .Include(p => p.Tenants)
+                .FirstOrDefaultAsync(p =>
+                    p.Id == id &&
+                    p.LandlordId == landlordId);
 
             if (existingProperty == null)
             {
                 return false;
             }
 
+            _context.Tenants.RemoveRange(existingProperty.Tenants);
             _context.Properties.Remove(existingProperty);
+
             await _context.SaveChangesAsync();
 
             return true;

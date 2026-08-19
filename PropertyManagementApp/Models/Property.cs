@@ -13,8 +13,7 @@ namespace PropertyManagementApp.Models
         [Range(0, double.MaxValue)]
         public decimal Rent { get; set; }
 
-        [Required]
-        public string Status { get; set; } = "Vacant";
+        public string Status => Tenants.Any() ? "Occupied" : "Vacant";
 
         public string LandlordId { get; set; } = string.Empty;
 

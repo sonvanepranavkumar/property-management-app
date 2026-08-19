@@ -62,5 +62,56 @@ namespace PropertyManagementApp.Controllers
 
             return View(property);
         }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            var landlordId = GetCurrentUserId();
+
+            var property = await _propertyService.GetPropertyAsync(id, landlordId);
+
+            if (property == null)
+            {
+                return NotFound();
+            }
+
+            return View(property);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Property property)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(property);
+            }
+
+            var landlordId = GetCurrentUserId();
+
+            var updatedProperty = await _propertyService.UpdatePropertyAsync(property, landlordId);
+
+            if (!updatedProperty)
+            {
+                return NotFound();
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var landlordId = GetCurrentUserId();
+
+            var deletedProperty = await _propertyService.DeletePropertyAsync(id, landlordId);
+
+            if (!deletedProperty)
+            {
+                return NotFound();
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
