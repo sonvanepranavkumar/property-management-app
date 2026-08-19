@@ -68,6 +68,40 @@ namespace PropertyManagementApp.Controllers
                 new { id = propertyId });
         }
 
+        public async Task<IActionResult> Edit(int id)
+        {
+            var tenant = await _tenantService.GetTenantAsync(id);
+
+            if (tenant == null)
+            {
+                return NotFound();
+            }
+
+            return View(tenant);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Tenant tenant)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(tenant);
+            }
+
+            var updatedTenant = await _tenantService.UpdateTenantAsync(tenant);
+
+            if (!updatedTenant)
+            {
+                return NotFound();
+            }
+
+            return RedirectToAction(
+                "ManageTenants",
+                "Property",
+                new { id = tenant.PropertyId });
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)

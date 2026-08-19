@@ -36,6 +36,13 @@
                     @(tenant.LeaseEndDate.HasValue ? tenant.LeaseEndDate.Value.ToString("dd/MM/yyyy") : "Ongoing")
                 </p>
 
+                <a asp-controller="Tenant"
+                   asp-action="Edit"
+                   asp-route-id="@tenant.Id"
+                   class="btn btn-primary">
+                    Edit
+                </a>
+
                 <form asp-controller="Tenant"
                       asp-action="Delete"
                       asp-route-id="@tenant.Id"
