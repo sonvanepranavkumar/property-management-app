@@ -33,9 +33,10 @@
                     }
 
                     <div class="mt-3">
-                        <a asp-action="ManageTenants"
-                           asp-route-id="@property.Id"
-                           class="btn btn-info">
+                        <a asp-controller="Tenant"
+                           asp-action="Index"
+                           asp-route-propertyId="@property.Id"
+                           class="btn btn-primary">
                             Manage Tenants
                         </a>
 
@@ -44,6 +45,13 @@
                            asp-route-propertyId="@property.Id"
                            class="btn btn-primary">
                             Rent Payments
+                        </a>
+
+                        <a asp-controller="Expense"
+                           asp-action="Index"
+                           asp-route-propertyId="@property.Id"
+                           class="btn btn-primary">
+                            Expenses
                         </a>
 
                         <a asp-action="Edit"

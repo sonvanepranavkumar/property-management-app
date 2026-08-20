@@ -1,12 +1,12 @@
-﻿@model Property
+﻿@model List<Tenant>
 
-<h4>@Model.Address</h4>
+<h1>Tenants</h1>
 
 <hr />
 
-@if (Model.Tenants.Any())
+@if (Model.Any())
 {
-    foreach (var tenant in Model.Tenants)
+    foreach (var tenant in Model)
     {
         <div class="card mb-3">
             <div class="card-body">
@@ -14,6 +14,7 @@
                 <h5 class="card-title">
                     @tenant.FirstName @tenant.LastName
                 </h5>
+
                 <p>
                     <strong>Email:</strong>
                     @tenant.Email
@@ -31,22 +32,23 @@
                     <strong>Lease Start:</strong>
                     @tenant.LeaseStartDate.ToString("dd/MM/yyyy")
                 </p>
+
                 <p>
                     <strong>Lease End:</strong>
                     @(tenant.LeaseEndDate.HasValue ? tenant.LeaseEndDate.Value.ToString("dd/MM/yyyy") : "Ongoing")
                 </p>
 
-                <a asp-controller="Tenant"
-                   asp-action="Edit"
+                <a asp-action="Edit"
                    asp-route-id="@tenant.Id"
                    class="btn btn-primary">
                     Edit
                 </a>
 
-                <form asp-controller="Tenant"
-                      asp-action="Delete"
+                <form asp-action="Delete"
+
                       asp-route-id="@tenant.Id"
-                      method="post">
+                      method="post"
+                      class="d-inline">
 
                     <button type="submit"
                             class="btn btn-danger"
@@ -55,19 +57,19 @@
                     </button>
 
                 </form>
-
             </div>
         </div>
     }
 }
 
-<a asp-controller="Tenant"
-   asp-action="Create"
-   asp-route-propertyId="@Model.Id"
+<a asp-action="Create"
+   asp-route-propertyId="@ViewBag.PropertyId"
    class="btn btn-primary">
     Add Tenant
 </a>
 
-<a asp-action="Index" class="btn btn-secondary">
+<a asp-controller="Property"
+   asp-action="Index"
+   class="btn btn-secondary">
     Back to Properties
 </a>

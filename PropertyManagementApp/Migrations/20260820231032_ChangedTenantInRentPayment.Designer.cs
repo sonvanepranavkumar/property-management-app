@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PropertyManagementApp.Data;
 
@@ -11,9 +12,11 @@ using PropertyManagementApp.Data;
 namespace PropertyManagementApp.Migrations
 {
     [DbContext(typeof(PropertyManagementAppDbContext))]
-    partial class PropertyManagementAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260820231032_ChangedTenantInRentPayment")]
+    partial class ChangedTenantInRentPayment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -27,12 +27,6 @@ namespace PropertyManagementApp.Data
                 .WithMany(p => p.RentPayments)
                 .HasForeignKey(r => r.PropertyId)
                 .OnDelete(DeleteBehavior.NoAction);
-
-            builder.Entity<RentPayment>()
-                .HasOne(r => r.Tenant)
-                .WithMany(t => t.RentPayments)
-                .HasForeignKey(r => r.TenantId)
-                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

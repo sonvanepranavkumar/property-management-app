@@ -16,7 +16,6 @@ namespace PropertyManagementApp.Services
         public async Task<List<RentPayment>> GetRentPaymentsAsync()
         {
             return await _context.RentPayments
-                .Include(r => r.Tenant)
                 .Include(r => r.Property)
                 .OrderByDescending(r => r.DueDate)
                 .ToListAsync();
@@ -25,23 +24,13 @@ namespace PropertyManagementApp.Services
         public async Task<RentPayment?> GetRentPaymentAsync(int id)
         {
             return await _context.RentPayments
-                .Include(r => r.Tenant)
                 .Include(r => r.Property)
                 .FirstOrDefaultAsync(r => r.Id == id);
-        }
-
-        public async Task<List<RentPayment>> GetRentPaymentsForTenantAsync(int tenantId)
-        {
-            return await _context.RentPayments
-                .Where(r => r.TenantId == tenantId)
-                .OrderByDescending(r => r.DueDate)
-                .ToListAsync();
         }
 
         public async Task<List<RentPayment>> GetRentPaymentsForPropertyAsync(int propertyId)
         {
             return await _context.RentPayments
-                .Include(r => r.Tenant)
                 .Where(r => r.PropertyId == propertyId)
                 .OrderByDescending(r => r.DueDate)
                 .ToListAsync();

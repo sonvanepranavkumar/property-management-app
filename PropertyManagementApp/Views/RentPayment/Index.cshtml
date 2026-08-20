@@ -12,16 +12,22 @@
 
     <input type="hidden" name="propertyId" value="@ViewBag.PropertyId" />
 
-    <select name="tenantId" class="form-select" onchange="this.form.submit()">
+    <select name="tenantName"
+            class="form-select"
+            onchange="this.form.submit()">
+
         <option value="">All Tenants</option>
 
         @foreach (var tenant in ViewBag.Tenants)
         {
-            <option value="@tenant.Id"
-                    selected="@(ViewBag.SelectedTenantId == tenant.Id)">
-                @tenant.FirstName @tenant.LastName
+            var fullName = $"{tenant.FirstName} {tenant.LastName}";
+
+            <option value="@fullName"
+                    selected="@(ViewBag.SelectedTenantName == fullName)">
+                @fullName
             </option>
         }
+
     </select>
 
 </form>
@@ -41,11 +47,12 @@
         @foreach (var rentPayment in Model)
         {
             <tr>
-                <td>@rentPayment.Tenant?.FirstName @rentPayment.Tenant?.LastName</td>
+                <td>@rentPayment.TenantName</td>
                 <td>@rentPayment.Amount</td>
                 <td>@rentPayment.DueDate</td>
                 <td>@rentPayment.PaymentDate</td>
                 <td>@rentPayment.Status</td>
+
                 <td>
                     @if (rentPayment.Status == "Pending")
                     {

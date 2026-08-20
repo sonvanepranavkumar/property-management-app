@@ -23,6 +23,22 @@ namespace PropertyManagementApp.Controllers
             return User.FindFirstValue(ClaimTypes.NameIdentifier)!;
         }
 
+        public async Task<IActionResult> Index(int propertyId)
+        {
+            var landlordId = GetCurrentUserId();
+
+            var property = await _propertyService.GetPropertyAsync(propertyId, landlordId);
+
+            if (property == null)
+            {
+                return NotFound();
+            }
+
+            ViewBag.PropertyId = propertyId;
+
+            return View(property.Tenants);
+        }
+
         public async Task<IActionResult> Create(int propertyId)
         {
             var landlordId = GetCurrentUserId();

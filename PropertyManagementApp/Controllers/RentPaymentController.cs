@@ -23,7 +23,7 @@ namespace PropertyManagementApp.Controllers
             return User.FindFirstValue(ClaimTypes.NameIdentifier)!;
         }
 
-        public async Task<IActionResult> Index(int propertyId, int? tenantId)
+        public async Task<IActionResult> Index(int propertyId, string? tenantName)
         {
             var landlordId = GetCurrentUserId();
 
@@ -36,16 +36,16 @@ namespace PropertyManagementApp.Controllers
 
             var rentPayments = await _rentPaymentService.GetRentPaymentsForPropertyAsync(propertyId);
 
-            if (tenantId.HasValue)
+            if (!string.IsNullOrEmpty(tenantName))
             {
                 rentPayments = rentPayments
-                    .Where(r => r.TenantId == tenantId.Value)
+                    .Where(r => r.TenantName == tenantName)
                     .ToList();
             }
 
             ViewBag.PropertyId = propertyId;
             ViewBag.Tenants = property.Tenants;
-            ViewBag.SelectedTenantId = tenantId;
+            ViewBag.TenantName = tenantName;
 
             return View(rentPayments);
         }

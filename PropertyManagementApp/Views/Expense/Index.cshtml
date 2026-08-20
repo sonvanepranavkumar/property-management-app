@@ -1,0 +1,32 @@
+﻿@model List<Expense>
+
+<h1>Expenses</h1>
+
+<a asp-action="Create"
+   asp-route-propertyId="@ViewBag.PropertyId"
+   class="btn btn-primary mb-3">
+    Create Expense
+</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Category</th>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Expense Date</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var expense in Model)
+        {
+            <tr>
+                <td>@expense.Category</td>
+                <td>@expense.Description</td>
+                <td>£@expense.Amount</td>
+                <td>@expense.ExpenseDate</td>
+            </tr>
+        }
+    </tbody>
+</table>

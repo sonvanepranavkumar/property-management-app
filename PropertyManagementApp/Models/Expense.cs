@@ -17,7 +17,7 @@ namespace PropertyManagementApp.Models
         public decimal Amount { get; set; }
 
         [Required]
-        public DateTime ExpenseDate { get; set; }
+        public DateOnly ExpenseDate { get; set; }
 
         public int PropertyId { get; set; }
 

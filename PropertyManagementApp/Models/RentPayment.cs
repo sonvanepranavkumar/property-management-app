@@ -21,8 +21,7 @@ namespace PropertyManagementApp.Models
 
         public Property? Property { get; set; }
 
-        public int TenantId { get; set; }
-
-        public Tenant? Tenant { get; set; }
+        [Required]
+        public string TenantName { get; set; } = string.Empty;
     }
 }

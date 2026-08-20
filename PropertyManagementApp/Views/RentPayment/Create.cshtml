@@ -8,20 +8,20 @@
     <input type="hidden" name="Status" value="Pending" />
 
     <div class="mb-3">
-        <label asp-for="TenantId" class="form-label"></label>
+        <label asp-for="TenantName" class="form-label"></label>
 
-        <select asp-for="TenantId" class="form-control">
+        <select asp-for="TenantName" class="form-control">
             <option value="">Select tenant</option>
 
             @foreach (var tenant in ViewBag.Tenants)
             {
-                <option value="@tenant.Id">
+                <option value="@($"{tenant.FirstName} {tenant.LastName}")">
                     @tenant.FirstName @tenant.LastName
                 </option>
             }
         </select>
 
-        <span asp-validation-for="TenantId" class="text-danger"></span>
+        <span asp-validation-for="TenantName" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
@@ -36,6 +36,8 @@
         <span asp-validation-for="DueDate" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-primary">Create Rent Payment</button>
+    <button type="submit" class="btn btn-primary">
+        Create Rent Payment
+    </button>
 
 </form>
