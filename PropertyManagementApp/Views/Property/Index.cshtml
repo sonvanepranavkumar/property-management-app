@@ -39,6 +39,13 @@
                             Manage Tenants
                         </a>
 
+                        <a asp-controller="RentPayment"
+                           asp-action="Index"
+                           asp-route-propertyId="@property.Id"
+                           class="btn btn-primary">
+                            Rent Payments
+                        </a>
+
                         <a asp-action="Edit"
                            asp-route-id="@property.Id"
                            class="btn btn-primary">

@@ -1,0 +1,70 @@
+﻿@model List<RentPayment>
+
+<h1>Rent Payments</h1>
+
+<a asp-action="Create"
+   asp-route-propertyId="@ViewBag.PropertyId"
+   class="btn btn-primary">
+    Create Rent Payment
+</a>
+
+<form asp-action="Index" method="get">
+
+    <input type="hidden" name="propertyId" value="@ViewBag.PropertyId" />
+
+    <select name="tenantId" class="form-select" onchange="this.form.submit()">
+        <option value="">All Tenants</option>
+
+        @foreach (var tenant in ViewBag.Tenants)
+        {
+            <option value="@tenant.Id"
+                    selected="@(ViewBag.SelectedTenantId == tenant.Id)">
+                @tenant.FirstName @tenant.LastName
+            </option>
+        }
+    </select>
+
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Tenant</th>
+            <th>Amount</th>
+            <th>Due Date</th>
+            <th>Payment Date</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var rentPayment in Model)
+        {
+            <tr>
+                <td>@rentPayment.Tenant?.FirstName @rentPayment.Tenant?.LastName</td>
+                <td>@rentPayment.Amount</td>
+                <td>@rentPayment.DueDate</td>
+                <td>@rentPayment.PaymentDate</td>
+                <td>@rentPayment.Status</td>
+                <td>
+                    @if (rentPayment.Status == "Pending")
+                    {
+                        <form asp-action="RentPaid" method="post">
+                            <input type="hidden" name="id" value="@rentPayment.Id" />
+                            <input type="hidden" name="propertyId" value="@rentPayment.PropertyId" />
+
+                            <button type="submit" class="btn btn-success">Rent Paid</button>
+                        </form>
+
+                        <form asp-action="CancelRentPayment" method="post">
+                            <input type="hidden" name="id" value="@rentPayment.Id" />
+                            <input type="hidden" name="propertyId" value="@rentPayment.PropertyId" />
+
+                            <button type="submit" class="btn btn-danger">Cancel</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

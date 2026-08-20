@@ -10,9 +10,9 @@ namespace PropertyManagementApp.Models
         public decimal Amount { get; set; }
 
         [Required]
-        public DateTime DueDate { get; set; }
+        public DateOnly DueDate { get; set; }
 
-        public DateTime? PaymentDate { get; set; }
+        public DateOnly? PaymentDate { get; set; }
 
         [Required]
         public string Status { get; set; } = "Pending";

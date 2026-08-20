@@ -52,6 +52,13 @@ namespace PropertyManagementApp.Controllers
                 return NotFound();
             }
 
+            if (tenant.LeaseEndDate.HasValue && tenant.LeaseEndDate < tenant.LeaseStartDate)
+            {
+                ModelState.AddModelError(
+                    "LeaseEndDate",
+                    "Lease end date cannot be before the lease start date.");
+            }
+
             if (!ModelState.IsValid)
             {
                 ViewBag.PropertyId = propertyId;
@@ -84,6 +91,13 @@ namespace PropertyManagementApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Tenant tenant)
         {
+            if (tenant.LeaseEndDate.HasValue && tenant.LeaseEndDate < tenant.LeaseStartDate)
+            {
+                ModelState.AddModelError(
+                    "LeaseEndDate",
+                    "Lease end date cannot be before the lease start date.");
+            }
+
             if (!ModelState.IsValid)
             {
                 return View(tenant);

@@ -41,9 +41,43 @@ namespace PropertyManagementApp.Services
         public async Task<List<RentPayment>> GetRentPaymentsForPropertyAsync(int propertyId)
         {
             return await _context.RentPayments
+                .Include(r => r.Tenant)
                 .Where(r => r.PropertyId == propertyId)
                 .OrderByDescending(r => r.DueDate)
                 .ToListAsync();
+        }
+
+        public async Task<bool> RentPaidAsync(int id)
+        {
+            var rentPayment = await _context.RentPayments.FindAsync(id);
+
+            if (rentPayment == null)
+            {
+                return false;
+            }
+
+            rentPayment.PaymentDate = DateOnly.FromDateTime(DateTime.Today);
+            rentPayment.Status = "Paid";
+
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> CancelRentPaymentAsync(int id)
+        {
+            var rentPayment = await _context.RentPayments.FindAsync(id);
+
+            if (rentPayment == null)
+            {
+                return false;
+            }
+
+            rentPayment.Status = "Cancelled";
+
+            await _context.SaveChangesAsync();
+
+            return true;
         }
 
         public async Task<RentPayment> CreateRentPaymentAsync(RentPayment rentPayment)
