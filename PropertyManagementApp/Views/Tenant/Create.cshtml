@@ -46,9 +46,9 @@
 
     <button type="submit" class="btn btn-primary">Add Tenant</button>
 
-    <a asp-controller="Property"
-       asp-action="ManageTenants"
-       asp-route-id="@ViewBag.PropertyId"
+    <a asp-controller="Tenant"
+       asp-action="Index"
+       asp-route-propertyId="@ViewBag.PropertyId"
        class="btn btn-secondary">
         Cancel
     </a>

@@ -86,9 +86,9 @@ namespace PropertyManagementApp.Controllers
             await _tenantService.CreateTenantAsync(tenant);
 
             return RedirectToAction(
-                "ManageTenants",
-                "Property",
-                new { id = propertyId });
+                "Index",
+                "Tenant",
+                new { propertyId });
         }
 
         public async Task<IActionResult> Edit(int id)
@@ -127,9 +127,9 @@ namespace PropertyManagementApp.Controllers
             }
 
             return RedirectToAction(
-                "ManageTenants",
-                "Property",
-                new { id = tenant.PropertyId });
+                "Index",
+                "Tenant",
+                new { propertyId = tenant.PropertyId });
         }
 
         [HttpPost]
@@ -148,9 +148,9 @@ namespace PropertyManagementApp.Controllers
             await _tenantService.DeleteTenantAsync(id);
 
             return RedirectToAction(
-                "ManageTenants",
-                "Property",
-                new { id = propertyId });
+                "Index",
+                "Tenant",
+                new { propertyId });
         }
     }
 }

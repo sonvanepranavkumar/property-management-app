@@ -49,20 +49,6 @@ namespace PropertyManagementApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> ManageTenants(int id)
-        {
-            var landlordId = GetCurrentUserId();
-
-            var property = await _propertyService.GetPropertyAsync(id, landlordId);
-
-            if (property == null)
-            {
-                return NotFound();
-            }
-
-            return View(property);
-        }
-
         public async Task<IActionResult> Edit(int id)
         {
             var landlordId = GetCurrentUserId();
