@@ -44,7 +44,7 @@ namespace PropertyManagementAppTests
         [Fact]
         public async Task Index_PropertyExists_ReturnsViewWithTenants()
         {
-
+            // Arrange
             var property = new Property
             {
                 Id = 1,
@@ -59,8 +59,10 @@ namespace PropertyManagementAppTests
                 .Setup(x => x.GetPropertyAsync(property.Id, UserId))
                 .ReturnsAsync(property);
 
+            // Act
             var actionResult = await _controller.Index(property.Id);
 
+            // Assert
             var viewResult = Assert.IsType<ViewResult>(actionResult);
 
             Assert.Equal(property.Tenants, viewResult.Model);
@@ -72,7 +74,7 @@ namespace PropertyManagementAppTests
         [Fact]
         public async Task Create_PropertyExists_ReturnsView()
         {
-
+            // Arrange
             var property = new Property
             {
                 Id = 1
@@ -82,8 +84,10 @@ namespace PropertyManagementAppTests
                 .Setup(x => x.GetPropertyAsync(property.Id, UserId))
                 .ReturnsAsync(property);
 
+            // Act
             var actionResult = await _controller.Create(property.Id);
 
+            // Assert
             Assert.IsType<ViewResult>(actionResult);
 
             Assert.Equal(property.Id, _controller.ViewBag.PropertyId);
@@ -94,7 +98,7 @@ namespace PropertyManagementAppTests
         [Fact]
         public async Task Create_ValidTenant_RedirectsToIndex()
         {
-
+            // Arrange
             var property = new Property
             {
                 Id = 1
@@ -103,7 +107,6 @@ namespace PropertyManagementAppTests
             var tenant = new Tenant
             {
                 Id = 1,
-                PropertyId = property.Id,
                 LeaseStartDate = DateOnly.FromDateTime(DateTime.Today),
                 LeaseEndDate = DateOnly.FromDateTime(DateTime.Today.AddMonths(12))
             };
@@ -112,8 +115,10 @@ namespace PropertyManagementAppTests
                 .Setup(x => x.GetPropertyAsync(property.Id, UserId))
                 .ReturnsAsync(property);
 
+            // Act
             var actionResult = await _controller.Create(property.Id, tenant);
 
+            // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(actionResult);
 
             Assert.Equal("Index", redirectResult.ActionName);
@@ -127,6 +132,7 @@ namespace PropertyManagementAppTests
         [Fact]
         public async Task Edit_ExistingTenant_ReturnsViewWithTenant()
         {
+            // Arrange
             var tenant = new Tenant
             {
                 Id = 1
@@ -136,8 +142,10 @@ namespace PropertyManagementAppTests
                 .Setup(x => x.GetTenantAsync(tenant.Id))
                 .ReturnsAsync(tenant);
 
+            // Act
             var actionResult = await _controller.Edit(tenant.Id);
 
+            // Assert
             var viewResult = Assert.IsType<ViewResult>(actionResult);
 
             Assert.Equal(tenant, viewResult.Model);
@@ -148,6 +156,7 @@ namespace PropertyManagementAppTests
         [Fact]
         public async Task Edit_ValidTenant_RedirectsToIndex()
         {
+            // Arrange
             var tenant = new Tenant
             {
                 Id = 1,
@@ -160,8 +169,10 @@ namespace PropertyManagementAppTests
                 .Setup(x => x.UpdateTenantAsync(tenant))
                 .ReturnsAsync(true);
 
+            // Act
             var actionResult = await _controller.Edit(tenant);
 
+            // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(actionResult);
 
             Assert.Equal("Index", redirectResult.ActionName);
@@ -174,6 +185,7 @@ namespace PropertyManagementAppTests
         [Fact]
         public async Task Delete_ExistingTenant_RedirectsToIndex()
         {
+            // Arrange
             var tenant = new Tenant
             {
                 Id = 1,
@@ -184,8 +196,10 @@ namespace PropertyManagementAppTests
                 .Setup(x => x.GetTenantAsync(tenant.Id))
                 .ReturnsAsync(tenant);
 
+            // Act
             var actionResult = await _controller.Delete(tenant.Id);
 
+            // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(actionResult);
 
             Assert.Equal("Index", redirectResult.ActionName);

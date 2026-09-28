@@ -67,13 +67,16 @@ namespace PropertyManagementAppTests
         [Fact]
         public async Task Create_ValidProperty_RedirectsToIndex()
         {
+            // Arrange
             var property = new Property
             {
                 Id = 1
             };
 
+            // Act
             var actionResult = await _controller.Create(property);
 
+            // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(actionResult);
 
             Assert.Equal(nameof(_controller.Index), redirectResult.ActionName);
@@ -84,6 +87,7 @@ namespace PropertyManagementAppTests
         [Fact]
         public async Task Edit_ExistingProperty_ReturnsViewWithProperty()
         {
+            // Arrange
             var property = new Property
             {
                 Id = 1
@@ -93,8 +97,10 @@ namespace PropertyManagementAppTests
                 .Setup(x => x.GetPropertyAsync(property.Id, UserId))
                 .ReturnsAsync(property);
 
+            // Act
             var actionResult = await _controller.Edit(property.Id);
 
+            // Assert
             var viewResult = Assert.IsType<ViewResult>(actionResult);
 
             Assert.Equal(property, viewResult.Model);
@@ -105,6 +111,7 @@ namespace PropertyManagementAppTests
         [Fact]
         public async Task Edit_ValidProperty_RedirectsToIndex()
         {
+            // Arrange
             var property = new Property
             {
                 Id = 1
@@ -114,8 +121,10 @@ namespace PropertyManagementAppTests
                 .Setup(x => x.UpdatePropertyAsync(property, UserId))
                 .ReturnsAsync(true);
 
+            // Act
             var actionResult = await _controller.Edit(property);
 
+            // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(actionResult);
 
             Assert.Equal(nameof(_controller.Index), redirectResult.ActionName);
@@ -126,14 +135,17 @@ namespace PropertyManagementAppTests
         [Fact]
         public async Task Delete_ExistingProperty_RedirectsToIndex()
         {
+            // Arrange
             var propertyId = 1;
 
             _propertyServiceMock
                 .Setup(x => x.DeletePropertyAsync(propertyId, UserId))
                 .ReturnsAsync(true);
 
+            // Act
             var actionResult = await _controller.Delete(propertyId);
 
+            // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(actionResult);
 
             Assert.Equal(nameof(_controller.Index), redirectResult.ActionName);

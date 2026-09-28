@@ -4,12 +4,7 @@ using Moq;
 using PropertyManagementApp.Controllers;
 using PropertyManagementApp.Models;
 using PropertyManagementApp.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PropertyManagementAppTests
 {
@@ -49,18 +44,19 @@ namespace PropertyManagementAppTests
         [Fact]
         public async Task Index_PropertyExists_ReturnsViewWithRentPayments()
         {
+            // Arrange
             var property = new Property
             {
                 Id = 1,
                 Tenants = new List<Tenant>
                 {
-                    new Tenant 
-                    { 
+                    new Tenant
+                    {
                         Id = 1,
                         FirstName = "TenantName1"
                     },
-                    new Tenant 
-                    { 
+                    new Tenant
+                    {
                         Id = 2,
                         FirstName = "TenantName2"
                     }
@@ -91,8 +87,10 @@ namespace PropertyManagementAppTests
                 .Setup(x => x.GetRentPaymentsForPropertyAsync(property.Id))
                 .ReturnsAsync(rentPayments);
 
+            // Act
             var actionResult = await _controller.Index(property.Id, null);
 
+            // Assert
             var viewResult = Assert.IsType<ViewResult>(actionResult);
 
             Assert.Equal(rentPayments, viewResult.Model);
@@ -106,6 +104,7 @@ namespace PropertyManagementAppTests
         [Fact]
         public async Task Index_TenantNameProvided_ReturnsFilteredRentPayments()
         {
+            // Arrange
             var property = new Property
             {
                 Id = 1,
@@ -148,8 +147,10 @@ namespace PropertyManagementAppTests
                 .Setup(x => x.GetRentPaymentsForPropertyAsync(property.Id))
                 .ReturnsAsync(rentPayments);
 
+            // Act
             var actionResult = await _controller.Index(property.Id, "TenantName1");
 
+            // Assert
             var viewResult = Assert.IsType<ViewResult>(actionResult);
 
             var filteredRentPayments = Assert.IsType<List<RentPayment>>(viewResult.Model);
@@ -159,32 +160,34 @@ namespace PropertyManagementAppTests
             Assert.Equal("TenantName1", _controller.ViewBag.TenantName);
             Assert.Equal(property.Id, _controller.ViewBag.PropertyId);
 
-            _rentPaymentServiceMock.Verify(
-                x => x.GetRentPaymentsForPropertyAsync(property.Id));
+            _rentPaymentServiceMock.Verify(x => x.GetRentPaymentsForPropertyAsync(property.Id));
         }
 
         [Fact]
         public async Task Create_PropertyExists_ReturnsView()
         {
+            // Arrange
             var property = new Property
             {
                 Id = 1,
                 Tenants = new List<Tenant>
-            {
-                new Tenant
                 {
-                    Id = 1,
-                    FirstName = "TenantName1"
+                    new Tenant
+                    {
+                        Id = 1,
+                        FirstName = "TenantName1"
+                    }
                 }
-            }
             };
 
             _propertyServiceMock
                 .Setup(x => x.GetPropertyAsync(property.Id, UserId))
                 .ReturnsAsync(property);
 
+            // Act
             var actionResult = await _controller.Create(property.Id);
 
+            // Assert
             Assert.IsType<ViewResult>(actionResult);
 
             Assert.Equal(property.Id, _controller.ViewBag.PropertyId);
@@ -196,24 +199,22 @@ namespace PropertyManagementAppTests
         [Fact]
         public async Task Create_ValidRentPayment_RedirectsToIndex()
         {
-            var property = new Property
-            {
-                Id = 1
-            };
-
+            // Arrange
             var rentPayment = new RentPayment
             {
                 Id = 1,
-                PropertyId = property.Id,
+                PropertyId = 1,
                 TenantName = "TenantName1"
             };
 
+            // Act
             var actionResult = await _controller.Create(rentPayment);
 
+            // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(actionResult);
 
             Assert.Equal("Index", redirectResult.ActionName);
-            Assert.Equal(property.Id, redirectResult.RouteValues!["propertyId"]);
+            Assert.Equal(rentPayment.PropertyId, redirectResult.RouteValues!["propertyId"]);
 
             _rentPaymentServiceMock.Verify(x => x.CreateRentPaymentAsync(rentPayment));
         }
@@ -221,6 +222,7 @@ namespace PropertyManagementAppTests
         [Fact]
         public async Task RentPaid_RentPaymentExists_RedirectsToIndex()
         {
+            // Arrange
             var rentPaymentId = 1;
             var propertyId = 1;
 
@@ -228,8 +230,10 @@ namespace PropertyManagementAppTests
                 .Setup(x => x.RentPaidAsync(rentPaymentId))
                 .ReturnsAsync(true);
 
+            // Act
             var actionResult = await _controller.RentPaid(rentPaymentId, propertyId);
 
+            // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(actionResult);
 
             Assert.Equal("Index", redirectResult.ActionName);
@@ -241,6 +245,7 @@ namespace PropertyManagementAppTests
         [Fact]
         public async Task CancelRentPayment_RentPaymentExists_RedirectsToIndex()
         {
+            // Arrange
             var rentPaymentId = 1;
             var propertyId = 1;
 
@@ -248,8 +253,10 @@ namespace PropertyManagementAppTests
                 .Setup(x => x.CancelRentPaymentAsync(rentPaymentId))
                 .ReturnsAsync(true);
 
+            // Act
             var actionResult = await _controller.CancelRentPayment(rentPaymentId, propertyId);
 
+            // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(actionResult);
 
             Assert.Equal("Index", redirectResult.ActionName);

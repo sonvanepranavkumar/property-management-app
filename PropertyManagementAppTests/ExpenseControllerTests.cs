@@ -43,6 +43,7 @@ namespace PropertyManagementAppTests
         [Fact]
         public async Task Index_PropertyExists_ReturnsViewWithExpenses()
         {
+            // Arrange
             var property = new Property
             {
                 Id = 1
@@ -70,8 +71,10 @@ namespace PropertyManagementAppTests
                 .Setup(x => x.GetExpensesForPropertyAsync(property.Id))
                 .ReturnsAsync(expenses);
 
+            // Act
             var actionResult = await _controller.Index(property.Id);
 
+            // Assert
             var viewResult = Assert.IsType<ViewResult>(actionResult);
 
             Assert.Equal(expenses, viewResult.Model);
@@ -85,6 +88,7 @@ namespace PropertyManagementAppTests
         [Fact]
         public async Task Create_PropertyExists_ReturnsView()
         {
+            // Arrange
             var property = new Property
             {
                 Id = 1
@@ -94,8 +98,10 @@ namespace PropertyManagementAppTests
                 .Setup(x => x.GetPropertyAsync(property.Id, UserId))
                 .ReturnsAsync(property);
 
+            // Act
             var actionResult = await _controller.Create(property.Id);
 
+            // Assert
             Assert.IsType<ViewResult>(actionResult);
 
             Assert.Equal(property.Id, _controller.ViewBag.PropertyId);
@@ -106,23 +112,21 @@ namespace PropertyManagementAppTests
         [Fact]
         public async Task Create_ValidExpense_RedirectsToIndex()
         {
-            var property = new Property
-            {
-                Id = 1
-            };
-
+            // Arrange
             var expense = new Expense
             {
                 Id = 1,
-                PropertyId = property.Id
+                PropertyId = 1
             };
 
+            // Act
             var actionResult = await _controller.Create(expense);
 
+            // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(actionResult);
 
             Assert.Equal("Index", redirectResult.ActionName);
-            Assert.Equal(property.Id, redirectResult.RouteValues!["propertyId"]);
+            Assert.Equal(expense.PropertyId, redirectResult.RouteValues!["propertyId"]);
 
             _expenseServiceMock.Verify(x => x.CreateExpenseAsync(expense));
         }
